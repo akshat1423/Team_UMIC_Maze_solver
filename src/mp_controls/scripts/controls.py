@@ -2,7 +2,8 @@
 
 import rospy
 from mp_controls.msg import Path
-from geometry_msgs.msg import Twist, PoseStamped
+from geometry_msgs.msg import Twist #, PoseStamped
+from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 from math import atan2
 
@@ -20,7 +21,8 @@ class Robot:
         self.current_pose = None
         
         self.path_sub = rospy.Subscriber('/path', Path, self.path_callback)
-        self.pose_sub = rospy.Subscriber('/pose', PoseStamped, self.pose_callback)
+        #self.pose_sub = rospy.Subscriber('/pose', PoseStamped, self.pose_callback)
+        self.sub_odom = rospy.Subscriber('/odom', Odometry, self.pose_callback)
         self.vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         
         # Initialize PID controller variables
@@ -33,7 +35,8 @@ class Robot:
         self.path = msg
     
     def pose_callback(self, msg):
-        self.current_pose = msg.pose
+        #self.current_pose = msg.pose
+        self.current_pose =msg.pose.pose
     
     def run(self):
         while not rospy.is_shutdown():
