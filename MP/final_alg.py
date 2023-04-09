@@ -1,9 +1,15 @@
-source = "test_maze.jpg"
+source = "white-black_final.jpg"
 width, height = 0, 0  # they are given values later
-start = (4, 190)
-end = (388, 190)
+# start = (400 - 350, 600 - 580)
+# end = (400 - 350, 600 - 26)
+
+# print(start, end)
+
+start = (48, 326)
+end = (570, 350)
 
 ############################################ convert image to array ###################################################
+
 
 from PIL import Image
 
@@ -61,7 +67,6 @@ def astar(maze, start, end):
 
 if __name__ == '__main__':
     maze = data_array
-    end = (maze.shape[0]-1, maze.shape[1]-1)
     path = astar(maze, start, end)
     if path is not None:
         path_coords = [(node[1], node[0]) for node in path]
@@ -76,6 +81,26 @@ if __name__ == '__main__':
         except Exception as e:
             print('Error saving path array:', e)
         print(path_array)
+
+        # Visualize the path using Plotly
+        import plotly.graph_objects as go
+
+        # Define the maze as a heatmap
+        maze_heatmap = go.Heatmap(z=maze, colorscale=[[0, 'white'], [1, 'black']])
+
+        # Define the path as a scatter plot
+        x_coords, y_coords = np.where(path_array == 1)
+        path_scatter = go.Scatter(x=y_coords, y=x_coords, mode='markers', marker=dict(color='red'))
+
+        # Create the plot
+        fig = go.Figure(data=[maze_heatmap, path_scatter])
+
+        # Set the axis labels
+        fig.update_layout(xaxis_title='X', yaxis_title='Y')
+
+        # Show the plot
+        fig.show()
+
     else:
         print('No path found from start to end.')
 
