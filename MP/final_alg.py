@@ -1,4 +1,4 @@
-source = "white-black_final.jpg"
+source = "white-black_final (3).jpg"
 width, height = 0, 0  # they are given values later
 # start = (400 - 350, 600 - 580)
 # end = (400 - 350, 600 - 26)
@@ -6,7 +6,7 @@ width, height = 0, 0  # they are given values later
 # print(start, end)
 
 start = (48, 326)
-end = (570, 350)
+end = (550, 300)
 
 ############################################ convert image to array ###################################################
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
             with open('my_maze_solved.csv', 'w') as f:
                 f.write('x,y\n')
                 for i, coord in enumerate(path_coords):
-                    f.write(f'{coord[0]},{coord[1]}\n')
+                    f.write(f'{coord[0]},{600 - coord[1]}\n')
         except Exception as e:
             print('Error saving path array:', e)
         print(path_array)
